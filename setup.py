@@ -98,6 +98,9 @@ setup(
             'rlp>=0.4.4',
             'ethjsonrpc>=0.3.0',
         ],
+        'monero': [
+            'monero-agent',
+        ]
     },
     python_requires='>=3.3',
     include_package_data=True,
