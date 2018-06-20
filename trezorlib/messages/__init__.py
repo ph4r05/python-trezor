@@ -101,9 +101,12 @@ from .Initialize import Initialize
 from .LiskAddress import LiskAddress
 from .LiskGetAddress import LiskGetAddress
 from .LiskGetPublicKey import LiskGetPublicKey
+from .LiskMessageSignature import LiskMessageSignature
 from .LiskPublicKey import LiskPublicKey
+from .LiskSignMessage import LiskSignMessage
 from .LiskSignTx import LiskSignTx
 from .LiskSignedTx import LiskSignedTx
+from .LiskVerifyMessage import LiskVerifyMessage
 from .LoadDevice import LoadDevice
 from .MessageSignature import MessageSignature
 from .MoneroAddress import MoneroAddress
@@ -161,11 +164,13 @@ from .SignTx import SignTx
 from .SignedIdentity import SignedIdentity
 from .SimpleSignTx import SimpleSignTx
 from .StellarAccountMergeOp import StellarAccountMergeOp
+from .StellarAddress import StellarAddress
 from .StellarAllowTrustOp import StellarAllowTrustOp
 from .StellarBumpSequenceOp import StellarBumpSequenceOp
 from .StellarChangeTrustOp import StellarChangeTrustOp
 from .StellarCreateAccountOp import StellarCreateAccountOp
 from .StellarCreatePassiveOfferOp import StellarCreatePassiveOfferOp
+from .StellarGetAddress import StellarGetAddress
 from .StellarGetPublicKey import StellarGetPublicKey
 from .StellarManageDataOp import StellarManageDataOp
 from .StellarManageOfferOp import StellarManageOfferOp

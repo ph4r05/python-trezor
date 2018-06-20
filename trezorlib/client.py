@@ -559,6 +559,20 @@ class ProtocolMixin(object):
         n = self._convert_prime(n)
         return self.call(proto.LiskGetPublicKey(address_n=n, show_display=show_display))
 
+    @expect(proto.LiskMessageSignature)
+    def lisk_sign_message(self, n, message):
+        n = self._convert_prime(n)
+        message = normalize_nfc(message)
+        return self.call(proto.LiskSignMessage(address_n=n, message=message))
+
+    def lisk_verify_message(self, pubkey, signature, message):
+        message = normalize_nfc(message)
+        try:
+            resp = self.call(proto.LiskVerifyMessage(signature=signature, public_key=pubkey, message=message))
+        except CallException as e:
+            resp = e
+        return isinstance(resp, proto.Success)
+
     @expect(proto.LiskSignedTx)
     def lisk_sign_tx(self, n, transaction):
         n = self._convert_prime(n)
@@ -701,7 +715,7 @@ class ProtocolMixin(object):
         try:
             msg = nem.create_sign_tx(transaction)
         except ValueError as e:
-            raise CallException(e.message)
+            raise CallException(e.args)
 
         assert msg.transaction is not None
         msg.transaction.address_n = n
@@ -778,7 +792,7 @@ class ProtocolMixin(object):
         return txes
 
     @session
-    def sign_tx(self, coin_name, inputs, outputs, version=None, lock_time=None, debug_processor=None):
+    def sign_tx(self, coin_name, inputs, outputs, version=None, lock_time=None, expiry=None, overwintered=None, debug_processor=None):
 
         # start = time.time()
         txes = self._prepare_sign_tx(inputs, outputs)
@@ -792,6 +806,10 @@ class ProtocolMixin(object):
             tx.version = version
         if lock_time is not None:
             tx.lock_time = lock_time
+        if expiry is not None:
+            tx.expiry = expiry
+        if overwintered is not None:
+            tx.overwintered = overwintered
         res = self.call(tx)
 
         # Prepare structure for signatures
@@ -1080,9 +1098,15 @@ class ProtocolMixin(object):
 
         return self.call(proto.SelfTest(payload=b'\x00\xFF\x55\xAA\x66\x99\x33\xCCABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\x00\xFF\x55\xAA\x66\x99\x33\xCC'))
 
+    @field('public_key')
     @expect(proto.StellarPublicKey)
-    def stellar_get_public_key(self, address_n):
-        return self.call(proto.StellarGetPublicKey(address_n=address_n))
+    def stellar_get_public_key(self, address_n, show_display=False):
+        return self.call(proto.StellarGetPublicKey(address_n=address_n, show_display=show_display))
+
+    @field('address')
+    @expect(proto.StellarAddress)
+    def stellar_get_address(self, address_n, show_display=False):
+        return self.call(proto.StellarGetAddress(address_n=address_n, show_display=show_display))
 
     def stellar_sign_transaction(self, tx, operations, address_n, network_passphrase=None):
         # default networkPassphrase to the public network

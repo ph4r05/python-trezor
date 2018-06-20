@@ -37,7 +37,7 @@ mkdir -p "$PB2_OUT"
 
 # compile .proto files to python2 modules using google protobuf library
 for file in $PROTO_FILES; do
-    protoc --python_out="$PB2_OUT" -I/usr/include -I"$PROTO_PATH" "$PROTO_PATH/$file.proto"
+    protoc --python_out="$PB2_OUT" -I/usr/include -I/usr/local/include -I"$PROTO_PATH" "$PROTO_PATH/$file.proto"
 done
 
 

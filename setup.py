@@ -2,9 +2,10 @@
 import os.path
 import shutil
 import subprocess
+import sys
 import tempfile
 
-from setuptools import setup, Command
+from setuptools import setup, Command, find_packages
 from setuptools.command.build_py import build_py
 from setuptools.command.develop import develop
 
@@ -44,7 +45,7 @@ class PrebuildCommand(Command):
         # generate and copy coins.json to the tree
         with tempfile.TemporaryDirectory() as tmpdir:
             build_coins = os.path.join(TREZOR_COMMON, 'defs', 'coins', 'tools', 'build_coins.py')
-            subprocess.check_call([build_coins], cwd=tmpdir)
+            subprocess.check_call([sys.executable, build_coins], cwd=tmpdir)
             shutil.copy(os.path.join(tmpdir, 'coins.json'), os.path.join(CWD, 'trezorlib', 'coins.json'))
 
         # regenerate messages
@@ -78,14 +79,7 @@ setup(
     author_email='info@trezor.io',
     description='Python library for communicating with TREZOR Hardware Wallet',
     url='https://github.com/trezor/python-trezor',
-    packages=[
-        'trezorlib',
-        'trezorlib.transport',
-        'trezorlib.messages',
-        'trezorlib.qt',
-        'trezorlib.tests.device_tests',
-        'trezorlib.tests.unit_tests',
-    ],
+    packages=find_packages(),
     package_data={
         'trezorlib': ['coins.json'],
     },
