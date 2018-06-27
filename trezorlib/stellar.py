@@ -1,3 +1,19 @@
+# This file is part of the Trezor project.
+#
+# Copyright (C) 2012-2018 SatoshiLabs and contributors
+#
+# This library is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License version 3
+# as published by the Free Software Foundation.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the License along with this library.
+# If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>.
+
 import base64
 import struct
 import xdrlib
@@ -31,6 +47,7 @@ OP_BUMP_SEQUENCE = 11
 
 
 DEFAULT_BIP32_PATH = "m/44h/148h/0h"
+# Stellar's BIP32 differs to Bitcoin's see https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0005.md
 
 
 def address_from_public_key(pk_bytes):

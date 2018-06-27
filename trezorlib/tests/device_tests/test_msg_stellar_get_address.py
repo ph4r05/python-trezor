@@ -1,17 +1,19 @@
-# This file is part of the TREZOR project.
+# This file is part of the Trezor project.
+#
+# Copyright (C) 2012-2018 SatoshiLabs and contributors
 #
 # This library is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
+# it under the terms of the GNU Lesser General Public License version 3
+# as published by the Free Software Foundation.
 #
 # This library is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Lesser General Public License for more details.
 #
-# You should have received a copy of the GNU Lesser General Public License
-# along with this library.  If not, see <http://www.gnu.org/licenses/>.
+# You should have received a copy of the License along with this library.
+# If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>.
+
 import pytest
 
 from .common import TrezorTest
@@ -24,16 +26,29 @@ from trezorlib.tools import parse_path
 
 
 @pytest.mark.stellar
-@pytest.mark.xfail(TREZOR_VERSION == 1, reason="T1 support is not yet finished")
 @pytest.mark.xfail(TREZOR_VERSION == 2, reason="T2 support is not yet finished")
 class TestMsgStellarGetAddress(TrezorTest):
 
     def test_stellar_get_address(self):
         self.setup_mnemonic_nopin_nopassphrase()
 
-        # GAK5MSF74TJW6GLM7NLTL76YZJKM2S4CGP3UH4REJHPHZ4YBZW2GSBPW
         address = self.client.stellar_get_address(parse_path(stellar.DEFAULT_BIP32_PATH))
         assert address == 'GAK5MSF74TJW6GLM7NLTL76YZJKM2S4CGP3UH4REJHPHZ4YBZW2GSBPW'
+
+    def test_stellar_get_address_sep(self):
+        # data from https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0005.md
+        self.client.load_device_by_mnemonic(
+            mnemonic='illness spike retreat truth genius clock brain pass fit cave bargain toe',
+            pin='',
+            passphrase_protection=False,
+            label='test',
+            language='english')
+
+        address = self.client.stellar_get_address(parse_path(stellar.DEFAULT_BIP32_PATH))
+        assert address == 'GDRXE2BQUC3AZNPVFSCEZ76NJ3WWL25FYFK6RGZGIEKWE4SOOHSUJUJ6'
+
+        address = self.client.stellar_get_address(parse_path("m/44h/148h/1h"))
+        assert address == 'GBAW5XGWORWVFE2XTJYDTLDHXTY2Q2MO73HYCGB3XMFMQ562Q2W2GJQX'
 
     def test_stellar_get_address_get_pubkey(self):
         self.setup_mnemonic_nopin_nopassphrase()

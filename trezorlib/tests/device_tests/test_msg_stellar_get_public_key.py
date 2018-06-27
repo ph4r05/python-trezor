@@ -1,17 +1,19 @@
-# This file is part of the TREZOR project.
+# This file is part of the Trezor project.
+#
+# Copyright (C) 2012-2018 SatoshiLabs and contributors
 #
 # This library is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
+# it under the terms of the GNU Lesser General Public License version 3
+# as published by the Free Software Foundation.
 #
 # This library is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Lesser General Public License for more details.
 #
-# You should have received a copy of the GNU Lesser General Public License
-# along with this library.  If not, see <http://www.gnu.org/licenses/>.
+# You should have received a copy of the License along with this library.
+# If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>.
+
 import pytest
 
 from .common import TrezorTest
@@ -24,7 +26,6 @@ from trezorlib.tools import parse_path
 
 
 @pytest.mark.stellar
-@pytest.mark.xfail(TREZOR_VERSION == 1, reason="T1 support is not yet finished")
 @pytest.mark.xfail(TREZOR_VERSION == 2, reason="T2 support is not yet finished")
 class TestMsgStellarGetPublicKey(TrezorTest):
 
