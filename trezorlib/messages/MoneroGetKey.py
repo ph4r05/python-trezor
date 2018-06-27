@@ -8,6 +8,7 @@ if __debug__:
 
 
 class MoneroGetKey(p.MessageType):
+    MESSAGE_WIRE_TYPE = 334
     FIELDS = {
         1: ('address_n', p.UVarintType, p.FLAG_REPEATED),
         2: ('network_type', p.UVarintType, 0),

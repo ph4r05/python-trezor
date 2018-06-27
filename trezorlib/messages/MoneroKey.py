@@ -3,6 +3,7 @@ from .. import protobuf as p
 
 
 class MoneroKey(p.MessageType):
+    MESSAGE_WIRE_TYPE = 335
     FIELDS = {
         1: ('watch_key', p.BytesType, 0),
         2: ('spend_key', p.BytesType, 0),
