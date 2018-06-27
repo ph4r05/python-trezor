@@ -111,7 +111,9 @@ from .LoadDevice import LoadDevice
 from .MessageSignature import MessageSignature
 from .MoneroAddress import MoneroAddress
 from .MoneroGetAddress import MoneroGetAddress
+from .MoneroGetKey import MoneroGetKey
 from .MoneroGetWatchKey import MoneroGetWatchKey
+from .MoneroKey import MoneroKey
 from .MoneroKeyImageExportInit import MoneroKeyImageExportInit
 from .MoneroKeyImageExportInitResp import MoneroKeyImageExportInitResp
 from .MoneroKeyImageSync import MoneroKeyImageSync
