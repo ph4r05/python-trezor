@@ -119,6 +119,7 @@ from .MoneroKeyImageSyncFinal import MoneroKeyImageSyncFinal
 from .MoneroKeyImageSyncFinalResp import MoneroKeyImageSyncFinalResp
 from .MoneroKeyImageSyncStep import MoneroKeyImageSyncStep
 from .MoneroKeyImageSyncStepResp import MoneroKeyImageSyncStepResp
+from .MoneroRctSig import MoneroRctSig
 from .MoneroRespError import MoneroRespError
 from .MoneroTsxAllOutSet import MoneroTsxAllOutSet
 from .MoneroTsxAllOutSetResp import MoneroTsxAllOutSetResp
