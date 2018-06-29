@@ -110,6 +110,8 @@ from .LiskVerifyMessage import LiskVerifyMessage
 from .LoadDevice import LoadDevice
 from .MessageSignature import MessageSignature
 from .MoneroAddress import MoneroAddress
+from .MoneroDiag import MoneroDiag
+from .MoneroDiagResp import MoneroDiagResp
 from .MoneroGetAddress import MoneroGetAddress
 from .MoneroGetKey import MoneroGetKey
 from .MoneroGetWatchKey import MoneroGetWatchKey
