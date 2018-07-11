@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
+import glob
 import os.path
+import re
 import shutil
 import subprocess
 import sys
@@ -8,6 +10,7 @@ import tempfile
 from setuptools import setup, Command, find_packages
 from setuptools.command.build_py import build_py
 from setuptools.command.develop import develop
+from distutils.errors import DistutilsError
 
 install_requires = [
     'setuptools>=19.0',
@@ -19,16 +22,23 @@ install_requires = [
     'libusb1>=1.6.4',
 ]
 
-from trezorlib import __version__ as VERSION
-
 CWD = os.path.dirname(os.path.realpath(__file__))
 TREZOR_COMMON = os.path.join(CWD, 'vendor', 'trezor-common')
 
 
-def read(name):
-    filename = os.path.join(CWD, name)
+def read(*path):
+    filename = os.path.join(CWD, *path)
     with open(filename, 'r') as f:
         return f.read()
+
+
+def find_version():
+    version_file = read("trezorlib", "__init__.py")
+    version_match = re.search(r"^__version__ = \"(.*)\"$", version_file, re.M)
+    if version_match:
+        return version_match.group(1)
+    else:
+        raise RuntimeError("Version string not found")
 
 
 class PrebuildCommand(Command):
@@ -45,22 +55,26 @@ class PrebuildCommand(Command):
         # check for existence of the submodule directory
         common_defs = os.path.join(TREZOR_COMMON, 'defs')
         if not os.path.exists(common_defs):
-            raise Exception('trezor-common submodule seems to be missing.\n' +
-                            'Use "git submodule update --init" to retrieve it.')
+            raise DistutilsError('trezor-common submodule seems to be missing.\n' +
+                                 'Use "git submodule update --init" to retrieve it.')
 
         # generate and copy coins.json to the tree
         with tempfile.TemporaryDirectory() as tmpdir:
-            build_coins = os.path.join(TREZOR_COMMON, 'defs', 'coins', 'tools', 'build_coins.py')
+            build_coins = os.path.join(TREZOR_COMMON, 'tools', 'build_coins.py')
             subprocess.check_call([sys.executable, build_coins], cwd=tmpdir)
             shutil.copy(os.path.join(tmpdir, 'coins.json'), os.path.join(CWD, 'trezorlib', 'coins.json'))
 
         # regenerate messages
         try:
-            subprocess.check_call([os.path.join(CWD, 'tools', 'build_protobuf'), '--no-core'])
+            proto_srcs = glob.glob(os.path.join(TREZOR_COMMON, "protob", "*.proto"))
+            subprocess.check_call([
+                sys.executable,
+                os.path.join(TREZOR_COMMON, "protob", "pb2py"),
+                "-o", os.path.join(CWD, "trezorlib", "messages"),
+                "-P", "..protobuf",
+            ] + proto_srcs)
         except Exception as e:
-            print(e)
-            print("Generating protobuf failed. Maybe you don't have 'protoc', or maybe you are on Windows?")
-            print("Using pre-generated files.")
+            raise DistutilsError("Generating protobuf failed. Make sure you have 'protoc' in your PATH.") from e
 
 
 def _patch_prebuild(cls):
@@ -80,7 +94,7 @@ _patch_prebuild(develop)
 
 setup(
     name='trezor',
-    version=VERSION,
+    version=find_version(),
     author='TREZOR',
     author_email='info@trezor.io',
     license='LGPLv3',
