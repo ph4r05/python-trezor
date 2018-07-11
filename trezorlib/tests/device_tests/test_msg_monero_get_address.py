@@ -29,4 +29,4 @@ class TestMsgMoneroGetAddress(TrezorTest):
         self.setup_mnemonic_nopin_nopassphrase()
 
         response = self.client.monero_get_address(parse_path(monero.DEFAULT_BIP32_PATH))
-        assert response.address == b'45PwgoUKaDHNqLL8o3okzLL7biv7GqPVmd8LTcTrYVrMEKdSYwFcyJfMLSRpfU3nh8Z2m81FJD4sUY3nXCdGe61k1HAp8T1'
+        assert response.address == b'49zNnuxjZFtDERsJHTNgMg3KpxLA8oUWbLqaEm6P1FL8U2eicixSZEnbR6J5DkV9xLfepggB9VZa7C3wcucjETo2UhKgnnW'

@@ -29,5 +29,5 @@ class TestMsgMoneroGetWatchOnly(TrezorTest):
         self.setup_mnemonic_nopin_nopassphrase()
 
         response = self.client.monero_get_watch_only(parse_path(monero.DEFAULT_BIP32_PATH))
-        assert response.address == b'45PwgoUKaDHNqLL8o3okzLL7biv7GqPVmd8LTcTrYVrMEKdSYwFcyJfMLSRpfU3nh8Z2m81FJD4sUY3nXCdGe61k1HAp8T1'
-        assert binascii.hexlify(response.watch_key) == b'83e6bac1c307c4fb09f8285a3c444c31fcfd68c1dc8cd4878afd6acfa037d709'
+        assert response.address == b'49zNnuxjZFtDERsJHTNgMg3KpxLA8oUWbLqaEm6P1FL8U2eicixSZEnbR6J5DkV9xLfepggB9VZa7C3wcucjETo2UhKgnnW'
+        assert binascii.hexlify(response.watch_key) == b'6f5417180f7c4c6742b0c7d0e8ba8e465bb892ee199d4b1d0bce857319681a0c'
