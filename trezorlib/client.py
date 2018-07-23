@@ -1125,13 +1125,13 @@ class ProtocolMixin(object):
 
         return resp
 
-    @expect(proto.MoneroAddressAck)
+    @expect(proto.MoneroAddress)
     def monero_get_address(self, address_n, network_type=None):
-        return self.call(proto.MoneroGetAddressRequest(address_n=address_n, network_type=network_type))
+        return self.call(proto.MoneroGetAddress(address_n=address_n, network_type=network_type))
 
-    @expect(proto.MoneroWatchKeyAck)
+    @expect(proto.MoneroWatchKey)
     def monero_get_watch_only(self, address_n, network_type=None):
-        return self.call(proto.MoneroGetWatchKeyRequest(address_n=address_n, network_type=network_type))
+        return self.call(proto.MoneroGetWatchKey(address_n=address_n, network_type=network_type))
 
 
 class TrezorClient(ProtocolMixin, TextUIMixin, BaseClient):
