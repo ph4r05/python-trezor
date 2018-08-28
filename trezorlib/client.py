@@ -523,6 +523,12 @@ class ProtocolMixin(object):
             data, chunk = data[data_length:], data[:data_length]
             response = self.call(proto.EthereumTxAck(data_chunk=chunk))
 
+        # https://github.com/trezor/trezor-mcu/pull/399
+        # https://github.com/trezor/trezor-core/pull/311
+        # only signature bit returned. recalculate signature_v
+        if response.signature_v <= 1:
+            response.signature_v += 2 * chain_id + 35
+
         return response.signature_v, response.signature_r, response.signature_s
 
     @expect(proto.EthereumMessageSignature)
@@ -1081,11 +1087,6 @@ class ProtocolMixin(object):
             raise RuntimeError("Device must be in bootloader mode")
 
         return self.call(proto.SelfTest(payload=b'\x00\xFF\x55\xAA\x66\x99\x33\xCCABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\x00\xFF\x55\xAA\x66\x99\x33\xCC'))
-
-    @field('public_key')
-    @expect(proto.StellarPublicKey)
-    def stellar_get_public_key(self, address_n, show_display=False):
-        return self.call(proto.StellarGetPublicKey(address_n=address_n, show_display=show_display))
 
     @field('address')
     @expect(proto.StellarAddress)
