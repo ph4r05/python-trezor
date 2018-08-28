@@ -60,9 +60,12 @@ class PrebuildCommand(Command):
 
         # generate and copy coins.json to the tree
         with tempfile.TemporaryDirectory() as tmpdir:
-            build_coins = os.path.join(TREZOR_COMMON, 'tools', 'build_coins.py')
-            subprocess.check_call([sys.executable, build_coins], cwd=tmpdir)
-            shutil.copy(os.path.join(tmpdir, 'coins.json'), os.path.join(CWD, 'trezorlib', 'coins.json'))
+            try:
+                build_coins = os.path.join(TREZOR_COMMON, 'tools', 'build_coins.py')
+                subprocess.check_call([sys.executable, build_coins], cwd=tmpdir)
+                shutil.copy(os.path.join(tmpdir, 'coins.json'), os.path.join(CWD, 'trezorlib', 'coins.json'))
+            except Exception as e:
+                print('Build coins error: %s' % e)
 
         # regenerate messages
         try:
