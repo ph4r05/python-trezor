@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-from __future__ import print_function
-
 '''
 Use TREZOR as a hardware key for opening EncFS filesystem!
 
@@ -62,7 +60,7 @@ def choose_device(devices):
     try:
         device_id = int(input())
         return devices[device_id]
-    except:
+    except Exception:
         raise ValueError("Invalid choice, exiting...")
 
 
@@ -102,7 +100,7 @@ def main():
 
         data = {'label': label,
                 'bip32_path': bip32_path,
-                'password_encrypted_hex': binascii.hexlify(passw_encrypted).decode('ascii')}
+                'password_encrypted_hex': binascii.hexlify(passw_encrypted).decode()}
 
         json.dump(data, open(passw_file, 'w'))
 
